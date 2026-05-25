@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pusat Pengaduan - BeautifulKost</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-blue: #0047bb;
+            --bg-gray: #f8faff;
+            --text-muted: #777;
+            --warning-yellow: #f1c40f;
+            --success-green: #2ecc71;
+        }
+
+        * { 
+            box-sizing: border-box; 
+            font-family: 'Inter', sans-serif; 
+        }
+
+        body {
+            background-color: #e0e0e0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .mobile-container {
+            max-width: 430px;
+            width: 100%;
+            background: var(--bg-gray);
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 90px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.1);
+        }
+
+        /* --- SINKRONISASI HEADER (SAMA SEPERTI TAGIHAN) --- */
+        .header { 
+            padding: 20px; 
+            background: white; 
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .user-bar { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+        }
+        .user-info { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+        }
+        .avatar { width: 35px; height: 35px; border-radius: 50%; background: #eee; overflow: hidden; }
+        .avatar {
+                    width: 38px;
+                    height: 38px;
+                    border-radius: 50%;
+                    background: #000;
+                    color: white;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 12px;
+                    font-weight: bold;
+        }
+        .user-name { 
+            font-weight: 700; 
+            color: var(--primary-blue); 
+            font-size: 16px; 
+        }
+
+        /* --- MAIN CONTENT --- */
+        .content { padding: 20px; }
+        .content h1 { font-size: 24px; margin: 10px 0 10px 0; font-weight: 800; }
+        .content p.sub { font-size: 13px; color: var(--text-muted); margin: 0 0 25px 0; line-height: 1.5; }
+
+        /* --- FORM CARD --- */
+        .form-card {
+            background: white; border-radius: 20px; padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02); margin-bottom: 25px;
+            border: 1px solid #f0f0f0;
+        }
+        .form-title { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; font-weight: 700; font-size: 15px; }
+        .form-icon { width: 35px; height: 35px; background: #f0f4ff; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+        
+        .label { display: block; font-size: 11px; font-weight: 600; color: #888; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .input-group { margin-bottom: 15px; }
+        select, textarea {
+            width: 100%; padding: 12px; border: 1px solid #eee; border-radius: 12px;
+            background: #fbfbfb; font-size: 13px; color: #333; outline: none;
+        }
+        textarea { height: 100px; resize: none; }
+
+        .upload-area {
+            border: 2px dashed #eee; border-radius: 12px; padding: 20px;
+            text-align: center; cursor: pointer; color: #bbb; font-size: 11px;
+        }
+        .upload-area span { display: block; font-size: 20px; margin-bottom: 5px; }
+
+        .btn-send {
+            width: 100%; background: var(--primary-blue); color: white; border: none;
+            padding: 15px; border-radius: 12px; font-weight: 700; margin-top: 15px;
+            display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer;
+        }
+
+        /* --- TICKET STATUS --- */
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .section-header b { font-size: 15px; color: #333; }
+        .section-header a { font-size: 12px; color: var(--primary-blue); text-decoration: none; font-weight: 600; }
+
+        .ticket-card {
+            background: white; border-radius: 15px; padding: 15px; margin-bottom: 12px;
+            border-left: 4px solid var(--warning-yellow); position: relative;
+            border-top: 1px solid #f5f5f5; border-right: 1px solid #f5f5f5; border-bottom: 1px solid #f5f5f5;
+        }
+        .ticket-card.done { border-left-color: var(--success-green); }
+        
+        .ticket-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .badge { font-size: 9px; padding: 4px 8px; border-radius: 20px; font-weight: 800; text-transform: uppercase; }
+        .badge.waiting { background: #fff9e6; color: #d4a017; }
+        .badge.success { background: #e8f9f0; color: var(--success-green); }
+        .time { font-size: 11px; color: #bbb; }
+
+        .ticket-card h4 { margin: 0 0 5px 0; font-size: 14px; font-weight: 700; color: #333; }
+        .ticket-card p { margin: 0 0 15px 0; font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+        .ticket-footer { font-size: 11px; color: #bbb; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #fafafa; padding-top: 10px; }
+
+        /* --- BOTTOM NAVIGATION (KUNCI MATI & SINKRON) --- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 430px;
+            height: 70px;
+            background: white;
+            display: flex !important;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #eee;
+            z-index: 1000;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-decoration: none !important;
+            color: #bbb !important; /* Warna abu default */
+        }
+
+        .nav-icon {
+            font-size: 24px !important; /* UKURAN ICON DIKUNCI */
+            margin-bottom: 2px !important;
+            line-height: 1 !important;
+        }
+
+        .nav-item span:last-child {
+            font-size: 11px !important; /* UKURAN TEKS DIKUNCI */
+            font-weight: 600 !important;
+        }
+
+        .nav-item.active {
+            color: #0047bb !important; /* Warna biru aktif */
+        }
+    </style>
+</head>
+<body>
+
+<div class="mobile-container">
+    <header class="header">
+        <div class="user-bar">
+            <a href="profil.html" class="user-info" style="text-decoration: none; display: flex; align-items: center; gap: 10px; cursor: pointer;">
+    <div class="avatar"></div>
+    <span class="user-name" style="color: #0047bb; font-weight: 700;">Elvyn</span>
+</a>
+            <span>🔔</span>
+        </div>
+    </header>
+
+    <div class="content">
+        <h1>Pusat Pengaduan</h1>
+        <p class="sub">Selesaikan masalah dengan cepat bersama tim dukungan kami yang siap membantu.</p>
+
+        <div class="form-card">
+            <div class="form-title">
+                <div class="form-icon">📑</div>
+                <span>Ajukan Keluhan</span>
+            </div>
+            
+            <div class="input-group">
+                <span class="label">Kategori Keluhan</span>
+                <select>
+                    <option value="pemeliharaan">Pemeliharaan & Perbaikan</option>
+                    <option value="listrik_air">Listrik & Air</option>
+                    <option value="internet">Jaringan Internet</option>
+                    <option value="tetangga">Isu Tetangga</option>
+                    <option value="tagihan">Tagihan & Pembayaran</option>
+                    <option value="lainnya">Lainnya</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <span class="label">Isi Keluhan</span>
+                <textarea placeholder="Jelaskan masalahnya secara terperinci..."></textarea>
+            </div>
+
+            <span class="label">Lampirkan Foto (Opsional)</span>
+            <div class="upload-area">
+                <span>☁️</span>
+                Unggah Gambar
+            </div>
+
+            <button class="btn-send">🚀 Kirim Permintaan</button>
+        </div>
+
+        <div class="section-header">
+            <b>Permintaan Terbaru</b>
+            <a href="#">Lihat Semua ></a>
+        </div>
+
+        <div class="ticket-card">
+            <div class="ticket-top">
+                <span class="badge waiting">Menunggu</span>
+                <span class="time">2 jam yang lalu</span>
+            </div>
+            <h4>Tetangga mengorok sangat keras</h4>
+            <p>"Tetangga sebelah kamar saya, di malam hari mengorok terlalu keras, sehingga saya tidak bisa tidur nyenyak..."</p>
+            <div class="ticket-footer">
+                <span>ID Tiket: #URB-8821</span>
+                <span>👤</span>
+            </div>
+        </div>
+
+        <div class="ticket-card done">
+            <div class="ticket-top">
+                <span class="badge success">Terselesaikan</span>
+                <span class="time">Kemarin</span>
+            </div>
+            <h4>Jendela kamar yang macet</h4>
+            <p>Pemilik kos telah menanggapi. Diperbaiki pada jam 4 sore kemarin.</p>
+            <div class="ticket-footer">
+                <span>ID Tiket: #URB-6750</span>
+                <span style="color: var(--success-green); font-weight: bold;">✔️ Terselesaikan</span>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="dashboardtest.html" class="nav-item">
+            <span class="nav-icon">🏠</span><span>Utama</span>
+        </a>
+        <a href="kamar.html" class="nav-item">
+            <span class="nav-icon">🏢</span><span>Kamar</span>
+        </a>
+        <a href="tagihan.html" class="nav-item">
+            <span class="nav-icon">🧾</span><span>Tagihan</span>
+        </a>
+        <a href="bantuan.html" class="nav-item active">
+            <span class="nav-icon">💬</span><span>Bantuan</span>
+        </a>
+    </nav>
+</div>
+
+<script>
+    window.onload = function() {
+        const namaSimpanan = localStorage.getItem("namaPengguna");
+        if (namaSimpanan) {
+            document.querySelector(".user-name").innerText = namaSimpanan;
+        }
+    };
+</script>
+
+</body>
+</html>

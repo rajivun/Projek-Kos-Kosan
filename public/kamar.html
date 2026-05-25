@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kamar Saya - BeautifulKost</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-blue: #0047bb;
+            --bg-gray: #f8faff;
+            --text-muted: #777;
+        }
+
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+        body {
+            background-color: #e0e0e0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .mobile-container {
+            max-width: 430px;
+            width: 100%;
+            background: var(--bg-gray);
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 80px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.1);
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background: white;
+        }
+        .header-left { display: flex; align-items: center; gap: 15px; font-weight: 700; color: var(--primary-blue); }
+
+        /* Card Image Utama */
+        .main-card {
+            margin: 15px;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            color: white;
+        }
+        .main-card img { width: 100%; height: 200px; object-fit: cover; }
+        .overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+        }
+        .tag { background: var(--primary-blue); padding: 4px 10px; border-radius: 5px; font-size: 10px; font-weight: bold; }
+        .main-card h2 { margin: 5px 0; font-size: 22px; }
+
+        /* Masa Menginap */
+        .info-section {
+            background: white;
+            margin: 0 15px 15px;
+            padding: 20px;
+            border-radius: 20px;
+        }
+        .flex-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+        .price-text { text-align: right; }
+        .price-text b { color: var(--primary-blue); font-size: 18px; }
+
+        /* Timeline */
+        .timeline { display: flex; align-items: center; justify-content: space-between; text-align: center; }
+        .date-box span { display: block; font-size: 12px; color: var(--text-muted); }
+        .date-box b { font-size: 14px; }
+        .line { flex: 1; height: 2px; background: #eee; margin: 0 10px; position: relative; }
+        .line::after { content: "●"; color: var(--primary-blue); position: absolute; top: -8px; left: 45%; }
+
+        /* Fasilitas */
+        .grid-fasilitas { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .item-fasilitas {
+            background: #f0f4ff;
+            padding: 15px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            color: #555;
+        }
+
+        /* Banner Perpanjang */
+        .blue-banner {
+            background: var(--primary-blue);
+            margin: 15px;
+            padding: 25px;
+            border-radius: 20px;
+            color: white;
+            text-align: center;
+        }
+        .btn-white {
+            background: white;
+            color: var(--primary-blue);
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 12px;
+            font-weight: bold;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+
+        /* Map Placeholder */
+        .map-section img {
+            width: 100%;
+            border-radius: 15px;
+            margin-top: 10px;
+        }
+
+        /* --- CSS NAVIGASI FIXED --- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 430px;
+            height: 70px;
+            background: white;
+            display: flex !important;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #eee;
+            z-index: 1000;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-decoration: none !important;
+            color: #bbb !important; /* Warna abu default */
+        }
+
+        .nav-icon {
+            font-size: 24px !important; /* UKURAN ICON DIKUNCI */
+            margin-bottom: 2px !important;
+            line-height: 1 !important;
+        }
+
+        .nav-item span:last-child {
+            font-size: 11px !important; /* UKURAN TEKS DIKUNCI */
+            font-weight: 600 !important;
+        }
+
+        .nav-item.active {
+            color: #0047bb !important; /* Warna biru aktif */
+        }
+    </style>
+</head>
+<body>
+
+<div class="mobile-container">
+    <header class="header">
+        <div class="header-left">
+            <span onclick="history.back()" style="cursor:pointer">←</span>
+            <span>Kamar Saya</span>
+        </div>
+        <span>🔔</span>
+    </header>
+
+    <div class="main-card">
+        <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=400" alt="Kamar">
+        <div class="overlay">
+            <span class="tag">Terjangkau</span>
+            <h2>Beautiful Kost</h2>
+            <p style="font-size: 11px; margin: 0;">📍 Gg. Kantil, Sekaran Raya</p>
+        </div>
+    </div>
+
+    <div class="info-section">
+        <div class="flex-row">
+            <div>
+                <b>Masa Menginap</b><br>
+                <small style="color: #aaa;">Hingga 24 Des, 2026</small>
+            </div>
+            <div class="price-text">
+                <b>Rp450.000</b> <small>/bulan</small><br>
+                <small style="color: red;">Tagihan berikutnya: 24 Okt, 2026</small>
+            </div>
+        </div>
+
+        <div class="timeline">
+            <div class="date-box">
+                <span>Check-In</span>
+                <b>24 Sep 2026</b>
+            </div>
+            <div class="line"></div>
+            <div class="date-box">
+                <span>Check-Out</span>
+                <b>24 Okt 2026</b>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-section">
+        <b>Fasilitas Kamar</b>
+        <div class="grid-fasilitas">
+            <div class="item-fasilitas">🌐 WiFi </div>
+            <div class="item-fasilitas">❄️ AC</div>
+            <div class="item-fasilitas">🍳 Dapur Bersama</div>
+            <div class="item-fasilitas">🧺 Mesin Cuci</div>
+        </div>
+    </div>
+
+    <div class="blue-banner">
+        <div style="font-size: 30px; margin-bottom: 10px;">🌙</div>
+        <h3>Perpanjang Sewa</h3>
+        <p style="font-size: 12px; opacity: 0.8;">Pastikan kamar Anda tersedia untuk semester berikutnya.</p>
+        <button class="btn-white">Perpanjang Masa Menginap</button>
+    </div>
+
+    <div class="info-section map-section">
+        <b>Lokasi</b>
+        <img src="https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/107.63, -6.90,14/400x200?access_token=YOUR_TOKEN" alt="Map">
+    </div>
+
+    <nav class="bottom-nav">
+    <a href="dashboard.html" class="nav-item">
+        <span class="nav-icon">🏠</span>
+        <span>Utama</span>
+    </a>
+    <a href="kamar.html" class="nav-item active">
+        <span class="nav-icon">🏢</span>
+        <span>Kamar</span>
+    </a>
+    <a href="tagihan.html" class="nav-item">
+        <span class="nav-icon">🧾</span>
+        <span>Tagihan</span>
+    </a>
+    <a href="bantuan.html" class="nav-item">
+            <span class="nav-icon">💬</span><span>Bantuan</span>
+    </a>
+</nav>
+</div>
+
+</body>
+</html>

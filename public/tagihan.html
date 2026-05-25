@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tagihan - BeautifulKost</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-blue: #0047bb;
+            --bg-gray: #f8faff;
+            --text-muted: #777;
+            --success-green: #2ecc71;
+        }
+
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+        body {
+            background-color: #e0e0e0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .mobile-container {
+            max-width: 430px;
+            width: 100%;
+            background: var(--bg-gray);
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 90px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.1);
+        }
+
+        /* Header */
+        .header { padding: 20px; background: white; }
+        .header h1 { font-size: 18px; color: #000000; margin: 0 0 15px 0; font-weight: 400; }
+        .user-bar { display: flex; align-items: center; justify-content: space-between; }
+        .user-info { display: flex; align-items: center; gap: 12px; }
+        .avatar { width: 35px; height: 35px; border-radius: 50%; background: #eee; overflow: hidden; }
+        .avatar {
+                    width: 38px;
+                    height: 38px;
+                    border-radius: 50%;
+                    background: #000;
+                    color: white;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 12px;
+                    font-weight: bold;
+                }
+        .user-name { font-weight: 700; color: var(--primary-blue); font-size: 16px; }
+
+        /* Blue Summary Card */
+        .summary-card {
+            background: var(--primary-blue);
+            margin: 15px;
+            padding: 25px;
+            border-radius: 20px;
+            color: white;
+            box-shadow: 0 10px 20px rgba(0, 71, 187, 0.2);
+        }
+        .summary-card p { font-size: 12px; opacity: 0.8; margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 1px; }
+        .summary-card h2 { font-size: 28px; margin: 0 0 20px 0; font-weight: 800; }
+        .next-date {
+            background: rgba(255,255,255,0.15);
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 15px; border-radius: 12px; font-size: 13px;
+        }
+
+        /* Section Title */
+        .section-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 20px; margin-top: 10px;
+        }
+        .section-header b { font-size: 14px; color: #333; }
+        .badge-req { background: #ffebeb; color: #ff5e5e; font-size: 10px; padding: 4px 8px; border-radius: 20px; font-weight: 700; }
+
+        /* Bill Card */
+        .bill-card {
+            background: white; margin: 0 15px 15px; padding: 20px; border-radius: 20px;
+            border: 1px solid #f0f0f0;
+        }
+        .bill-top { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .bill-icon { width: 45px; height: 45px; background: #f0f4ff; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .bill-main-info { flex: 1; margin-left: 15px; }
+        .bill-main-info b { font-size: 14px; display: block; }
+        .bill-main-info span { font-size: 12px; color: var(--text-muted); }
+        .bill-amount { text-align: right; }
+        .bill-amount b { font-size: 14px; display: block; }
+        .bill-amount span { font-size: 11px; color: #ff5e5e; font-weight: 600; }
+
+        .bill-actions { display: flex; gap: 10px; }
+        .btn-pay { flex: 2; background: var(--primary-blue); color: white; border: none; padding: 12px; border-radius: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; }
+        .btn-details { flex: 1; background: white; border: 1px solid #eee; padding: 12px; border-radius: 12px; font-weight: 600; color: #555; cursor: pointer; }
+
+        /* History List */
+        .history-card { background: white; margin: 0 15px 15px; padding: 15px; border-radius: 20px; border: 1px solid #f0f0f0; }
+        .history-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; }
+        .history-item:not(:last-child) { border-bottom: 1px solid #f9f9f9; }
+        .history-left { display: flex; align-items: center; gap: 15px; }
+        .check-circle { width: 35px; height: 35px; background: #e8f9f0; color: var(--success-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .history-info b { font-size: 13px; display: block; }
+        .history-info span { font-size: 11px; color: #aaa; }
+        .history-right { text-align: right; }
+        .history-right b { font-size: 13px; display: block; }
+        .history-right a { font-size: 11px; color: #3498db; text-decoration: none; font-weight: 600; }
+
+        .view-all { text-align: center; display: block; margin: 10px 0 30px; color: var(--primary-blue); font-size: 13px; font-weight: 600; text-decoration: none; }
+
+        /* BOTTOM NAVIGATION - KUNCI MATI */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 430px;
+            height: 70px;
+            background: white;
+            display: flex !important;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #eee;
+            z-index: 1000;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-decoration: none !important;
+            color: #bbb !important; /* Warna abu default */
+        }
+
+        .nav-icon {
+            font-size: 24px !important; /* UKURAN ICON DIKUNCI */
+            margin-bottom: 2px !important;
+            line-height: 1 !important;
+        }
+
+        .nav-item span:last-child {
+            font-size: 11px !important; /* UKURAN TEKS DIKUNCI */
+            font-weight: 600 !important;
+        }
+
+        .nav-item.active {
+            color: #0047bb !important; /* Warna biru aktif */
+        }
+    </style>
+</head>
+<body>
+
+<div class="mobile-container">
+    <header class="header">
+        <h1>Tagihan & Pembayaran</h1>
+        <div class="user-bar">
+            <a href="profil.html" class="user-info" style="text-decoration: none; display: flex; align-items: center; gap: 10px; cursor: pointer;">
+    <div class="avatar"></div>
+    <span class="user-name" style="color: #0047bb; font-weight: 700;">Elvyn</span>
+</a>
+            <span>🔔</span>
+        </div>
+    </header>
+
+    <div class="summary-card">
+        <p>Jumlah Total Yang Belum Dibayar</p>
+        <h2>Rp500.000</h2>
+        <div class="next-date">
+            <span>📅</span>
+            <span>Tagihan Berikutnya: 24 Okt, 2026</span>
+        </div>
+    </div>
+
+    <div class="section-header">
+        <b>Tagihan yang belum dibayar</b>
+        <span class="badge-req">AKSI DIPERLUKAN</span>
+    </div>
+
+    <div class="bill-card">
+        <div class="bill-top">
+            <div class="bill-icon">🏢</div>
+            <div class="bill-main-info">
+                <b>Sewa Bulanan</b>
+                <span>Periode: 24 Okt 2026 - 24 Nov, 2026</span>
+            </div>
+            <div class="bill-amount">
+                <b>Rp450.000</b>
+                <span>Jatuh tempo dalam 4 hari</span>
+            </div>
+        </div>
+        <div class="bill-actions">
+    <a href="perpanjang.html" style="text-decoration: none; flex: 2;">
+        <button class="btn-pay" style="width: 100%;"><span>🔄</span> Perpanjang Sewa</button>
+    </a>
+    <button class="btn-details">Details</button>
+</div>
+    </div>
+
+    <div class="section-header">
+        <b>Riwayat Pembayaran</b>
+    </div>
+
+    <div class="history-card">
+        <div class="history-item">
+            <div class="history-left">
+                <div class="check-circle">✓</div>
+                <div class="history-info">
+                    <b>Sewa Bulanan - Sept</b>
+                    <span>Dibayar 23 Sep, 2026</span>
+                </div>
+            </div>
+            <div class="history-right">
+                <b>Rp450.000</b>
+                <a href="#">Invoice #BK-8821</a>
+            </div>
+        </div>
+        <div class="history-item">
+            <div class="history-left">
+                <div class="check-circle">✓</div>
+                <div class="history-info">
+                    <b>Sewa Bulanan - Ags</b>
+                    <span>Dibayar 22 Ags, 2026</span>
+                </div>
+            </div>
+            <div class="history-right">
+                <b>Rp450.000</b>
+                <a href="#">Invoice #BK-8711</a>
+            </div>
+        </div>
+    </div>
+
+    <a href="#" class="view-all">Lihat Semua Riwayat</a>
+
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="nav-item">
+            <span class="nav-icon">🏠</span><span>Utama</span>
+        </a>
+        <a href="kamar.html" class="nav-item">
+            <span class="nav-icon">🏢</span><span>Kamar</span>
+        </a>
+        <a href="tagihan.html" class="nav-item active">
+            <span class="nav-icon">🧾</span><span>Tagihan</span>
+        </a>
+        <a href="bantuan.html" class="nav-item">
+            <span class="nav-icon">💬</span><span>Bantuan</span>
+    </a>
+    </nav>
+</div>
+
+<script>
+    // Ambil nama dari localStorage agar sinkron
+    window.onload = function() {
+        const namaSimpanan = localStorage.getItem("namaPengguna");
+        if (namaSimpanan) {
+            document.querySelector(".user-name").innerText = namaSimpanan;
+        }
+    };
+</script>
+
+</body>
+</html>

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perpanjang Sewa - BeautifulKost</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-blue: #0047bb;
+            --bg-gray: #f8faff;
+            --text-muted: #777;
+            --border-blue: #3b82f6;
+        }
+
+        * { 
+            box-sizing: border-box; 
+            font-family: 'Inter', sans-serif; 
+        }
+
+        body {
+            background-color: #e0e0e0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .mobile-container {
+            max-width: 430px;
+            width: 100%;
+            background: var(--bg-gray);
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 90px; /* Jarak bawah agar konten tidak tertutup bottom nav */
+            box-shadow: 0 0 50px rgba(0,0,0,0.1);
+        }
+
+        /* Header Area */
+        .header { 
+            padding: 20px 20px 10px 20px; 
+            background: white; 
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .top-title { 
+            font-size: 13px; 
+            color: #bbb; 
+            margin: 0 0 12px 0; 
+            font-weight: 600;
+        }
+        .btn-back { 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 5px; 
+            color: var(--primary-blue); 
+            font-size: 12px; 
+            font-weight: 700; 
+            text-decoration: none; 
+            margin-bottom: 15px; 
+        }
+        .main-title { 
+            font-size: 22px; 
+            font-weight: 800; 
+            margin: 0 0 5px 0; 
+            color: #111; 
+        }
+        .sub-title { 
+            font-size: 13px; 
+            color: var(--text-muted); 
+            margin: 0; 
+        }
+
+        .content { padding: 0 20px; }
+
+        /* Card Info Kamar */
+        .info-card { 
+            background: white; 
+            border-radius: 15px; 
+            padding: 15px; 
+            margin-top: 15px; 
+            border: 1px solid #f0f0f0; 
+        }
+        .badge-status { 
+            background: #e0f2fe; 
+            color: #0369a1; 
+            font-size: 10px; 
+            font-weight: 700; 
+            padding: 4px 10px; 
+            border-radius: 20px; 
+            display: inline-block; 
+            margin-bottom: 8px; 
+        }
+        .room-name { 
+            font-size: 15px; 
+            font-weight: 700; 
+            color: #222; 
+            margin-bottom: 4px; 
+        }
+        .room-loc { 
+            font-size: 12px; 
+            color: #999; 
+        }
+
+        /* Card Batas Sewa */
+        .date-card { 
+            background: white; 
+            border-radius: 15px; 
+            padding: 15px; 
+            margin-top: 15px; 
+            text-align: center; 
+            border: 1px solid #f0f0f0; 
+        }
+        .date-label { 
+            font-size: 10px; 
+            color: #aaa; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+            margin-bottom: 5px; 
+        }
+        .date-value { 
+            font-size: 16px; 
+            font-weight: 700; 
+            color: #222; 
+        }
+
+        /* Pilihan Durasi */
+        .section-label { 
+            font-size: 13px; 
+            font-weight: 700; 
+            color: #444; 
+            margin: 20px 0 10px 0; 
+            display: block; 
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .duration-option { 
+            background: white; 
+            border: 1px solid #eee; 
+            border-radius: 15px; 
+            padding: 18px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            margin-bottom: 10px; 
+            cursor: pointer; 
+            transition: 0.2s;
+            user-select: none;
+        }
+        .duration-option.selected { 
+            border: 2px solid var(--border-blue); 
+            background: #f0f6ff; 
+        }
+        .duration-text { 
+            font-size: 13px; 
+            font-weight: 700; 
+            color: #333; 
+        }
+
+        /* Status Lingkaran Indikator */
+        .status-circle {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+            color: transparent;
+            transition: all 0.2s ease;
+        }
+        .duration-option.selected .status-circle {
+            border-color: #0047bb;
+            background: #0047bb;
+            color: white;
+        }
+
+        /* Rincian Pembayaran */
+        .billing-card { 
+            background: #f4f7fc; 
+            border-radius: 15px; 
+            padding: 15px; 
+            margin-top: 15px; 
+        }
+        .bill-row { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 10px; 
+            font-size: 12px; 
+            color: #555; 
+        }
+        .bill-row.total { 
+            border-top: 1px dashed #ddd; 
+            padding-top: 12px; 
+            margin-top: 12px; 
+            margin-bottom: 0; 
+        }
+        .bill-row.total b { 
+            font-size: 15px; 
+            color: var(--primary-blue); 
+        }
+
+        /* Metode Pembayaran */
+        .method-card { 
+            background: white; 
+            border: 2px solid var(--border-blue); 
+            border-radius: 15px; 
+            padding: 15px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+        }
+        .method-left { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            font-size: 13px; 
+            font-weight: 700; 
+        }
+        .qris-box { 
+            background: #e0e7ff; 
+            color: #4338ca; 
+            padding: 6px 10px; 
+            border-radius: 8px; 
+            font-size: 11px; 
+            font-weight: 800; 
+        }
+        .circle-checked { 
+            width: 18px; 
+            height: 18px; 
+            background: var(--primary-blue); 
+            color: white; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 10px; 
+        }
+
+        /* Terms Warning */
+        .terms-card { 
+            background: #fff1f2; 
+            border-radius: 15px; 
+            padding: 15px; 
+            margin-top: 20px; 
+            display: flex; 
+            gap: 12px; 
+            border: 1px solid #ffe4e6; 
+        }
+        .terms-icon { font-size: 18px; color: #f43f5e; }
+        .terms-text { 
+            font-size: 12px; 
+            color: #e11d48; 
+            font-weight: 700; 
+            line-height: 1.4; 
+        }
+        .terms-text span {
+            display: block;
+            font-size: 11px;
+            color: #666;
+            font-weight: 400;
+            margin-top: 2px;
+        }
+
+        /* Button Konfirmasi */
+        .btn-confirm { 
+            width: 100%; 
+            background: var(--primary-blue); 
+            color: white; 
+            border: none; 
+            padding: 16px; 
+            border-radius: 15px; 
+            font-weight: 700; 
+            font-size: 14px; 
+            margin-top: 20px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+            cursor: pointer; 
+        }
+
+        /* BOTTOM NAVIGATION STYLE */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 430px;
+            height: 70px;
+            background: white;
+            display: flex !important;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #eee;
+            z-index: 1000;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-decoration: none !important;
+            color: #bbb !important; /* Warna abu default */
+        }
+
+        .nav-icon {
+            font-size: 24px !important; /* UKURAN ICON DIKUNCI */
+            margin-bottom: 2px !important;
+            line-height: 1 !important;
+        }
+
+        .nav-item span:last-child {
+            font-size: 11px !important; /* UKURAN TEKS DIKUNCI */
+            font-weight: 600 !important;
+        }
+
+        .nav-item.active {
+            color: #0047bb !important; /* Warna biru aktif */
+        }
+    </style>
+</head>
+<body>
+
+<div class="mobile-container">
+    <header class="header">
+        <div class="top-title">Extend Stay</div>
+        <a href="tagihan.html" class="btn-back">⬅️ Back to Dashboard</a>
+        <h1 class="main-title">Perpanjang Sewa</h1>
+        <p class="sub-title">Perbarui masa sewa kamar Anda</p>
+    </header>
+
+    <div class="content">
+        <div class="info-card">
+            <span class="badge-status">Masa Sewa Aktif</span>
+            <div class="room-name">Kamar 21 – Lantai 2</div>
+            <div class="room-loc">Gln. Pati, Sekaran Raya</div>
+        </div>
+
+        <div class="date-card">
+            <div class="date-label">Batas Akhir Sewa</div>
+            <div class="date-value">24 Nov 2026</div>
+        </div>
+
+        <span class="section-label">Pilih Durasi Sewa</span>
+        <div class="duration-option selected" id="opsi-6bulan">
+            <div class="duration-text">📅 +6 Bulan</div>
+            <div class="status-circle">✓</div>
+        </div>
+        <div class="duration-option" id="opsi-1tahun">
+            <div class="duration-text">✨ +1 Tahun</div>
+            <div class="status-circle"></div>
+        </div>
+
+        <span class="section-label">Rincian Pembayaran</span>
+        <div class="billing-card">
+            <div class="bill-row">
+                <span>Sewa Bulanan</span>
+                <strong>Rp. 11.000.000</strong>
+            </div>
+            <div class="bill-row">
+                <span>Denda</span>
+                <strong>Rp. 100.000</strong>
+            </div>
+            <div class="bill-row total">
+                <div>
+                    <span style="font-size: 10px; color:#aaa;">TOTAL BULANAN BARU</span><br>
+                    <b>Rp. 11.100.000</b>
+                </div>
+                <div style="text-align: right;">
+                    <span style="font-size: 10px; color:#aaa;">BATAS AKHIR BARU</span><br>
+                    <strong style="font-size: 13px; color:#222;">24 November 2026</strong>
+                </div>
+            </div>
+        </div>
+
+        <span class="section-label">Pilih Metode Pembayaran</span>
+        <div class="method-card">
+            <div class="method-left">
+                <div class="qris-box">QRIS</div>
+                <span>QRIS</span>
+            </div>
+            <div class="circle-checked">✓</div>
+        </div>
+
+        <div class="terms-card">
+            <div class="terms-icon">⚠️</div>
+            <div class="terms-text">
+                Terms of Extension
+                <span>Dengan mengkonfirmasi, Anda menyetujui durasi sewa yang diperbarui.</span>
+            </div>
+        </div>
+
+        <a href="bayar.html" style="text-decoration: none; width: 100%; display: block;">
+            <button class="btn-confirm">Konfirmasi Perpanjangan ➡️</button>
+        </a>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="dashboardtest.html" class="nav-item">
+            <span class="nav-icon">🏠</span><span>Utama</span>
+        </a>
+        <a href="kamar.html" class="nav-item">
+            <span class="nav-icon">🏢</span><span>Kamar</span>
+        </a>
+        <a href="tagihan.html" class="nav-item active">
+            <span class="nav-icon">🧾</span><span>Tagihan</span>
+        </a>
+        <a href="bantuan.html" class="nav-item">
+            <span class="nav-icon">💬</span><span>Bantuan</span>
+        </a>
+    </nav>
+</div>
+
+<script>
+    const btn6Bulan = document.getElementById('opsi-6bulan');
+    const btn1Tahun = document.getElementById('opsi-1tahun');
+
+    btn6Bulan.addEventListener('click', function() {
+        btn6Bulan.classList.add('selected');
+        btn6Bulan.querySelector('.status-circle').innerText = '✓';
+        btn1Tahun.classList.remove('selected');
+        btn1Tahun.querySelector('.status-circle').innerText = '';
+    });
+
+    btn1Tahun.addEventListener('click', function() {
+        btn1Tahun.classList.add('selected');
+        btn1Tahun.querySelector('.status-circle').innerText = '✓';
+        btn6Bulan.classList.remove('selected');
+        btn6Bulan.querySelector('.status-circle').innerText = '';
+    });
+</script>
+
+</body>
+</html>

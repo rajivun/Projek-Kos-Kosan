@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cek Ketersediaan - BeautifulKost</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* 1. Global Reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: #e0e0e0;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* 2. Container Mobile */
+    .container {
+      width: 100%;
+      max-width: 420px;
+      background: #f8faff;
+      min-height: 100vh;
+      box-shadow: 0 0 50px rgba(0,0,0,0.1);
+      padding-bottom: 30px;
+    }
+
+    /* Top Bar Auth Link */
+    .top-bar {
+      padding: 20px 20px 10px 20px;
+      display: flex;
+      justify-content: flex-start;
+    }
+    .btn-login-back {
+      background: #0047bb;
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    /* Header Title */
+    .header-section {
+      padding: 10px 20px;
+      text-align: left;
+    }
+    .main-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+    }
+    .sub-title {
+      font-size: 12px;
+      color: #666;
+    }
+
+    /* 3. Filter Card Section */
+    .filter-card {
+      background: white;
+      margin: 15px 20px;
+      padding: 15px;
+      border-radius: 16px;
+      border: 1px solid #edf2f7;
+    }
+
+    /* Dropdown Lantai */
+    .select-floor {
+      width: 100%;
+      padding: 12px;
+      background: #f1f3f7;
+      border: none;
+      border-radius: 10px;
+      font-size: 13px;
+      color: #333;
+      font-weight: 600;
+      outline: none;
+      margin-bottom: 12px;
+    }
+
+    /* Status Pill Buttons */
+    .status-group {
+      display: flex;
+      gap: 8px;
+    }
+    .status-pill {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #718096;
+      background: #edf2f7;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    .status-pill.active {
+      background: #0047bb;
+      color: white;
+    }
+
+    /* 4. Rentang Tanggal Card */
+    .date-card {
+      background: white;
+      margin: 15px 20px;
+      padding: 15px;
+      border-radius: 16px;
+      border: 1px solid #edf2f7;
+      text-align: left;
+    }
+    .date-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #0047bb;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .date-subtitle {
+      font-size: 11px;
+      color: #666;
+      margin-bottom: 12px;
+    }
+    .date-inputs {
+      display: flex;
+      align-items: center;
+      background: #f1f3f7;
+      border-radius: 10px;
+      padding: 5px 10px;
+    }
+    .date-field {
+      width: 100%;
+      border: none;
+      background: transparent;
+      font-size: 12px;
+      color: #333;
+      padding: 8px;
+      outline: none;
+    }
+    .date-arrow {
+      color: #a0aec0;
+      padding: 0 5px;
+    }
+
+    /* 5. Daftar Kamar List */
+    .room-list-section {
+      padding: 0 20px;
+    }
+
+    .floor-group-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0047bb;
+      text-align: left;
+      margin: 20px 0 10px 0;
+    }
+
+    /* Room Item Card */
+    .room-card {
+      background: white;
+      border-radius: 16px;
+      border: 1px solid #edf2f7;
+      overflow: hidden;
+      margin-bottom: 15px;
+      text-align: left;
+      position: relative;
+    }
+    .room-img-wrapper {
+      width: 100%;
+      height: 160px;
+      background: #e2e8f0;
+      position: relative;
+    }
+    .room-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .badge-status {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #e6fffa;
+      color: #319795;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .room-info {
+      padding: 15px;
+    }
+    .room-name {
+      font-size: 11px;
+      color: #718096;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .room-price {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0047bb;
+    }
+    .room-price span {
+      font-size: 11px;
+      color: #a0aec0;
+      font-weight: 400;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <div class="top-bar">
+      <a href="indextest.html" class="btn-login-back">Masuk/Daftar</a>
+    </div>
+
+    <div class="header-section">
+      <h1 class="main-title">Cek Ketersediaan</h1>
+      <p class="sub-title">Cek Ketersediaan Kamar Kos</p>
+    </div>
+
+    <div class="filter-card">
+      <select class="select-floor">
+        <option>Semua Lantai</option>
+        <option>Lantai 1</option>
+        <option>Lantai 2</option>
+      </select>
+
+      <div class="status-group">
+        <button class="status-pill active">✓ Tersedia</button>
+        <button class="status-pill">Terisi</button>
+        <button class="status-pill">Renovasi</button>
+      </div>
+    </div>
+
+    <div class="date-card">
+      <div class="date-title">📅 Ketersediaan Mendatang</div>
+      <div class="date-subtitle">Pilih rentang untuk cek ketersediaan mendatang.</div>
+      
+      <div class="date-inputs">
+        <input type="text" class="date-field" placeholder="mm/dd/yyyy" onfocus="(this.type='date')">
+        <span class="date-arrow">➡️</span>
+        <input type="text" class="date-field" placeholder="mm/dd/yyyy" onfocus="(this.type='date')">
+      </div>
+    </div>
+
+    <div class="room-list-section">
+      
+      <div class="floor-group-title">Lantai 1</div>
+      
+      <div class="room-card">
+        <div class="room-img-wrapper">
+          <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=500&q=80" class="room-img" alt="Kamar 12">
+          <span class="badge-status">Tersedia</span>
+        </div>
+        <div class="room-info">
+          <div class="room-name">Kamar 12</div>
+          <div class="room-price">Rp. 12.000.000<span>/tahun</span></div>
+        </div>
+      </div>
+
+      <div class="floor-group-title">Lantai 2</div>
+      
+      <div class="room-card">
+        <div class="room-img-wrapper">
+          <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=500&q=80" class="room-img" alt="Kamar 25">
+          <span class="badge-status">Tersedia</span>
+        </div>
+        <div class="room-info">
+          <div class="room-name">Kamar 25</div>
+          <div class="room-price">Rp. 11.000.000<span>/tahun</span></div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+</html>

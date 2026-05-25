@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - BeautifulKost</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 1. SETTING DASAR --- */
+        :root {
+            --primary-blue: #0047bb;
+            --bg-gray: #f8faff;
+            --text-dark: #1a1a1a;
+            --text-muted: #777;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #e0e0e0; /* Warna di luar layar HP biar kontras */
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* --- 2. CONTAINER LAYAR HP --- */
+        .mobile-container {
+            max-width: 430px; /* Ukuran layar iPhone Pro Max */
+            width: 100%;
+            background: var(--bg-gray);
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 90px; /* Jarak biar gak ketutup menu bawah */
+            box-shadow: 0 0 50px rgba(0,0,0,0.1);
+        }
+
+        /* --- 3. HEADER & USER --- */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            align-items: center;
+        }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #000;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .user-name { font-weight: 600; color: var(--primary-blue); font-size: 14px; }
+        .notif-btn { font-size: 20px; cursor: pointer; position: relative; }
+        .notif-badge {
+            position: absolute; top: -2px; right: -2px;
+            background: red; width: 8px; height: 8px; border-radius: 50%;
+        }
+
+        /* --- 4. TEXT GREETING --- */
+        .main-content { padding: 0 20px; }
+        .greeting { font-size: 22px; font-weight: 800; margin: 10px 0 5px 0; }
+        .subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 25px; }
+
+        /* --- 5. CARD KAMAR (FIGMA STYLE) --- */
+        .room-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            margin-bottom: 20px;
+            border: 1px solid #f0f0f0;
+        }
+        .img-wrapper { position: relative; width: 100%; height: 180px; }
+        .room-img { width: 100%; height: 100%; object-fit: cover; }
+        .status-badge {
+            position: absolute; top: 12px; right: 12px;
+            background: white; padding: 6px 12px; border-radius: 20px;
+            font-size: 11px; font-weight: 700; color: var(--primary-blue);
+            display: flex; align-items: center; gap: 5px;
+        }
+        .room-info { padding: 20px; }
+        .room-info small { color: #aaa; text-transform: uppercase; font-size: 10px; letter-spacing: 1px; }
+        .room-info h3 { margin: 5px 0; font-size: 18px; font-weight: 700; }
+        .room-info p { margin: 0; color: var(--text-muted); font-size: 12px; }
+        .price-box { margin-top: 15px; }
+        .price-label { font-size: 11px; color: var(--text-muted); display: block; }
+        .price-val { font-size: 22px; font-weight: 800; color: var(--primary-blue); }
+
+        /* --- 6. TOMBOL AKSI --- */
+        .action-card {
+            display: flex; align-items: center; padding: 18px; border-radius: 16px;
+            margin-bottom: 12px; gap: 15px; cursor: pointer; transition: 0.2s;
+        }
+        .action-card.blue { background: var(--primary-blue); color: white; }
+        .action-card.white { background: white; border: 1px solid #eee; }
+        .action-icon { width: 40px; height: 40px; background: rgba(255,255,255,0.2); 
+                       border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .white .action-icon { background: #f0f4ff; color: var(--primary-blue); }
+        .action-text h4 { margin: 0; font-size: 15px; }
+        .action-text p { margin: 2px 0 0; font-size: 12px; opacity: 0.8; }
+
+        /* --- 7. BOTTOM NAV --- */
+        /* --- CSS NAVIGASI FIXED --- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 430px;
+            height: 70px;
+            background: white;
+            display: flex !important;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #eee;
+            z-index: 1000;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-decoration: none !important;
+            color: #bbb !important; /* Warna abu default */
+        }
+
+        .nav-icon {
+            font-size: 24px !important; /* UKURAN ICON DIKUNCI */
+            margin-bottom: 2px !important;
+            line-height: 1 !important;
+        }
+
+        .nav-item span:last-child {
+            font-size: 11px !important; /* UKURAN TEKS DIKUNCI */
+            font-weight: 600 !important;
+        }
+
+        .nav-item.active {
+            color: #0047bb !important; /* Warna biru aktif */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container">
+        <header class="header">
+            <a href="profil.html" class="user-info" style="text-decoration: none; display: flex; align-items: center; gap: 10px; cursor: pointer;">
+    <div class="avatar"></div>
+    <span class="user-name" style="color: #0047bb; font-weight: 700;">Elvyn</span>
+</a>
+            <div class="notif-btn">
+                🔔<div class="notif-badge"></div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <h1 class="greeting">Selamat datang kembali, Pengguna</h1>
+            <p class="subtitle">Masa menginap Anda di Beautiful Kost sedang berlangsung.</p>
+
+            <div class="room-card">
+                <div class="img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=400" alt="Kamar" class="room-img">
+                    <div class="status-badge"><span>●</span> Masa Sewa Aktif</div>
+                </div>
+                <div class="room-info">
+                    <small>BEAUTIFUL KOST</small>
+                    <h3>Kamar 21 — Lantai 2</h3>
+                    <p>Bergabung pada Juni 2026</p>
+                    <div class="price-box">
+                        <span class="price-label">Biaya bulanan saat ini</span>
+                        <span class="price-val">Rp450.000</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-card blue">
+                <div class="action-icon">💳</div>
+                <div class="action-text">
+                    <h4>Bayar Tagihan</h4>
+                    <p>Jatuh tempo dalam 4 hari</p>
+                </div>
+            </div>
+
+            <div class="action-card white">
+                <div class="action-icon">🛠️</div>
+                <div class="action-text">
+                    <h4>Pengaduan dan Keluhan</h4>
+                    <p>Ajukan pengaduan atau keluhan</p>
+                </div>
+            </div>
+        </main>
+
+        <nav class="bottom-nav">
+    <a href="dashboard.html" class="nav-item active">
+        <span class="nav-icon">🏠</span>
+        <span>Utama</span>
+    </a>
+    <a href="kamar.html" class="nav-item">
+        <span class="nav-icon">🏢</span>
+        <span>Kamar</span>
+    </a>
+    <a href="tagihan.html" class="nav-item">
+        <span class="nav-icon">🧾</span>
+        <span>Tagihan</span>
+    </a>
+    <a href="bantuan.html" class="nav-item">
+            <span class="nav-icon">💬</span><span>Bantuan</span>
+    </a>
+</nav>
+
+    </div>
+
+<script>
+        // Jalankan kode ini otomatis saat halaman dashboard terbuka
+        window.onload = function() {
+            const namaSimpanan = localStorage.getItem("namaPengguna");
+
+            if (namaSimpanan) {
+                // Ganti tulisan di nama profil (class="user-name")
+                const elNama = document.querySelector(".user-name");
+                if(elNama) elNama.innerText = namaSimpanan;
+
+                // Ganti tulisan di ucapan selamat datang (class="greeting")
+                const elGreeting = document.querySelector(".greeting");
+                if(elGreeting) elGreeting.innerText = "Selamat datang kembali, " + namaSimpanan;
+            }
+        };
+    </script>
+</body>
+
+</body>
+</html>
