@@ -394,9 +394,6 @@ async function prosesMasuk() {
   }
 
 }
-
-}
-
 </script>
 </body>
 </html>
