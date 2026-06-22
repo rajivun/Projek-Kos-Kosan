@@ -191,6 +191,7 @@
       <p class="subtitle">Masuk untuk mengelola kamar, cek tagihan, atau melakukan perpanjangan sewa.</p>
       
       <input id="email-masuk" type="email" placeholder="Masukkan email terdaftar" />
+        <input id="password-masuk" type="password" placeholder="Masukkan password" />
       <button class="btn-primary" onclick="prosesMasuk()">Masuk Aplikasi ➡️</button>
     </div>
 
@@ -268,8 +269,8 @@ async function prosesDaftar() {
   try {
 
     const response = await fetch(
-  "https://projek-kos-kosan-production.up.railway.app/api/register",
-  {
+      "https://projek-kos-kosan-production.up.railway.app/api/register",
+      {
 
         method: "POST",
 
@@ -302,7 +303,7 @@ async function prosesDaftar() {
       );
 
       window.location.href =
-      "kamarsedia.html";
+      "dashboard.html";
 
     } else {
 
@@ -325,9 +326,12 @@ async function prosesMasuk() {
   const email =
   document.getElementById("email-masuk").value.trim();
 
-  if(email === "") {
+  const password =
+  document.getElementById("password-masuk").value.trim();
 
-    alert("Masukkan email!");
+  if(email === "" || password === "") {
+
+    alert("Masukkan email dan password!");
     return;
 
   }
@@ -335,8 +339,8 @@ async function prosesMasuk() {
   try {
 
     const response = await fetch(
-  "https://projek-kos-kosan-production.up.railway.app/api/login",
-  {
+      "https://projek-kos-kosan-production.up.railway.app/api/login",
+      {
 
         method: "POST",
 
@@ -367,12 +371,17 @@ async function prosesMasuk() {
         data.user.name
       );
 
+      // Simpan token jika Laravel Sanctum/JWT
+      if(data.token){
+        localStorage.setItem("token", data.token);
+      }
+
       window.location.href =
       "dashboard.html";
 
     } else {
 
-      alert(data.message);
+      alert(data.message || "Email atau password salah");
 
     }
 
@@ -383,6 +392,8 @@ async function prosesMasuk() {
     alert("Login gagal");
 
   }
+
+}
 
 }
 
