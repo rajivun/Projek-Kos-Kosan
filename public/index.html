@@ -326,9 +326,12 @@ async function prosesMasuk() {
   const email =
   document.getElementById("email-masuk").value.trim();
 
-  if(email === "") {
+  const password =
+  document.getElementById("password-masuk").value.trim();
 
-    alert("Masukkan email!");
+  if(email === "" || password === "") {
+
+    alert("Masukkan email dan password!");
     return;
 
   }
@@ -368,12 +371,17 @@ async function prosesMasuk() {
         data.user.name
       );
 
+      // Simpan token jika Laravel Sanctum/JWT
+      if(data.token){
+        localStorage.setItem("token", data.token);
+      }
+
       window.location.href =
       "dashboard.html";
 
     } else {
 
-      alert(data.message);
+      alert(data.message || "Email atau password salah");
 
     }
 
@@ -384,6 +392,8 @@ async function prosesMasuk() {
     alert("Login gagal");
 
   }
+
+}
 
 }
 
